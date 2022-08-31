@@ -44,7 +44,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<List<Car>>(Message.MaintenanceTime);
             }
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Message.CarListed);
         }
 
         public IDataResult<List<Car>> GetAllByColorId(int id)

@@ -19,7 +19,7 @@ namespace Business.Constants
         public static string UserAdded = "Kullanıcı eklendi.";
         public static string CustomerAdded = "Müşteri eklendi.";
         public static string RentalErrorAdded = "Aracınız başka müşteride";
-
-
+        public static string RentalGotById = "Seçilen araç";
+        public static string UserListed = "Kullanıcılar listelendi.";
     }
 }
