@@ -1,0 +1,71 @@
+﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
+using DataAccess.Abstract;
+using Entities.Concrete;
+using Entities.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Business.Concrete
+{
+    public class CarManager : ICarService
+    {
+        ICarDal _carDal;
+
+        public CarManager(ICarDal carDal)
+        {
+            _carDal = carDal;
+        }
+
+        public IResult Add(Car car)
+        {
+            if (car.ModelYear < 2010)
+            {
+                return new ErrorResult(Message.CarNotAdded);
+            }
+            _carDal.Add(car);
+            return new SuccessResult(Message.CarAdded);
+
+        }
+
+        public IResult Delete(Car car)
+        {            
+            _carDal.Delete(car);
+            return new SuccessResult(Message.CarDelete);
+        }
+
+        public IDataResult<List<Car>> GetAll()
+        {
+            if (DateTime.Now.Hour == 22)
+            {
+                return new ErrorDataResult<List<Car>>(Message.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+        }
+
+        public IDataResult<List<Car>> GetAllByColorId(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p=>p.ColorId == id));
+        }
+
+        public IDataResult<Car> GetById(int id)
+        {
+            return new SuccessDataResult<Car>(_carDal.Get(p => p.Id == id));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
+        }
+
+        public IResult Update(Car car)
+        {          
+            _carDal.Update(car);
+            return new SuccessResult(Message.CarUpdated);
+        }
+    }
+}
