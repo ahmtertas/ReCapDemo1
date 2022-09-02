@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation.FluentValidation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -23,10 +25,7 @@ namespace Business.Concrete
 
         public IResult Add(Car car)
         {
-            if (car.ModelYear < 2010)
-            {
-                return new ErrorResult(Message.CarNotAdded);
-            }
+            ValidationTool.Validate(new CarValidator(),car);
             _carDal.Add(car);
             return new SuccessResult(Message.CarAdded);
 
