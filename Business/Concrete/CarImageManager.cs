@@ -30,16 +30,20 @@ namespace Business.Concrete
             {
                 return result;
             }
-            carImage.ImagePath = _fileHelper.Upload(file, PathConstants.ImagesPath);
+            carImage.ImagePath = _fileHelper.Upload(file,PathConstants.ImagesPath);
             carImage.Date = DateTime.Now;
             _carImageDal.Add(carImage);
             return new SuccessResult("Resim başarıyla yüklendi");
         }
 
-        public IResult Delete(CarImage carImage)
+        public IResult Delete(int id)
         {
-            _fileHelper.Delete(PathConstants.ImagesPath + carImage.ImagePath);
-            _carImageDal.Delete(carImage);
+            var results = _carImageDal.GetAll(p=>p.CarId == id);
+            foreach (var result in results)
+            {
+                _fileHelper.Delete(PathConstants.ImagesPath + result.ImagePath);
+                _carImageDal.Delete(result);
+            }         
             return new SuccessResult();
         }
         public IResult Update(IFormFile file, CarImage carImage)

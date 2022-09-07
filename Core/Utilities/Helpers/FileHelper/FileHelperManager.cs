@@ -11,25 +11,7 @@ namespace Core.Utilities.Helpers.FileHelper
     // Projeme yükleyeceğim dosyalarla ilgili yükleme,silme,güncelleme işlemlerini bu class!ımda yapıyorum.
     //İşlemin nasıl gerçekleştiğini anlamak için yazdığım yorum satırlarını okumaya En alttaki *Upload* metodunundan başlayabilirsiniz.
     public class FileHelperManager : IFileHelper
-    {
-        public void Delete(string filePath)//Burada ki string filePath, 'CarImageManager'dan gelen dosyamın kaydedildiği adres ve adı 
-        {
-            if (File.Exists(filePath))//if kontrolü ile parametrede gelen adreste öyle bir dosya var mı diye kontrol ediliyor.
-            {
-                File.Delete(filePath);//Eğer dosya var ise dosya bulunduğu yerden siliniyor.
-            }
-        }
-
-        public string Update(IFormFile file, string filePath, string root)//Dosya güncellemek için ise gelen parametreye baktığımızda Güncellenecek yeni dosya, Eski dosyamızın kayıt dizini, ve yeni bir kayıt dizini
-        {
-            if (File.Exists(filePath))// Tekrar if kontrolü ile parametrede gelen adreste öyle bir dosya var mı diye kontrol ediliyor.
-            {
-                File.Delete(filePath);//Eğer dosya var ise dosya bulunduğu yerden siliniyor.
-            }
-            return Upload(file, root);// Eski dosya silindikten sonra yerine geçecek yeni dosyaiçin alttaki *Upload* metoduna yeni dosya ve kayıt edileceği adres parametre olarak döndürülüyor.
-        }
-
-        
+    {             
         public string Upload(IFormFile file, string root)
         {
             if (file.Length > 0)//file.Length=>Dosya uzunluğunu bayt olarak alır. burada Dosya gönderil mi gönderilmemiş diye test işlemi yapıldı.
@@ -51,6 +33,23 @@ namespace Core.Utilities.Helpers.FileHelper
                 }
             }
             return null;
+        }
+
+        public void Delete(string filePath)//Burada ki string filePath, 'CarImageManager'dan gelen dosyamın kaydedildiği adres ve adı 
+        {
+            if (File.Exists(filePath))//if kontrolü ile parametrede gelen adreste öyle bir dosya var mı diye kontrol ediliyor.
+            {
+                File.Delete(filePath);//Eğer dosya var ise dosya bulunduğu yerden siliniyor.
+            }
+        }
+
+        public string Update(IFormFile file, string filePath, string root)//Dosya güncellemek için ise gelen parametreye baktığımızda Güncellenecek yeni dosya, Eski dosyamızın kayıt dizini, ve yeni bir kayıt dizini
+        {
+            if (File.Exists(filePath))// Tekrar if kontrolü ile parametrede gelen adreste öyle bir dosya var mı diye kontrol ediliyor.
+            {
+                File.Delete(filePath);//Eğer dosya var ise dosya bulunduğu yerden siliniyor.
+            }
+            return Upload(file, root);// Eski dosya silindikten sonra yerine geçecek yeni dosyaiçin alttaki *Upload* metoduna yeni dosya ve kayıt edileceği adres parametre olarak döndürülüyor.
         }
     }
 }
