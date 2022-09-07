@@ -21,5 +21,8 @@ namespace Business.Constants
         public static string RentalErrorAdded = "Aracınız başka müşteride";
         public static string RentalGotById = "Seçilen araç";
         public static string UserListed = "Kullanıcılar listelendi.";
+        public static string OverBrandCount = "En fazla 14 marka ekleyebilirsiniz";
+        public static string OverCountOfCar = "Şirketimize 10 adet araçtan fazlası eklenememektedir.";
+        public static string RentalNotAddedForReturnDate = "Aracımız şu an kirada";
     }
 }

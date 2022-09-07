@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -20,31 +23,16 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
-            var result = _rentalDal.Get(r => r.Id == rental.Id);
-            if (result is not null)
+            var result = BusinessRules.Run(CheckRentalCarIsReturnDateNull(rental));
+            if (result != null)
             {
-                return new ErrorResult(Message.RentalErrorAdded);
+                return new ErrorResult(Message.RentalNotAddedForReturnDate);
             }
-
-            else
-            {
-
-                var response = _rentalDal.Get
-                    (r => r.CarId == rental.CarId && (r.ReturnDate == null 
-                    || r.ReturnDate > rental.RentDate));
-
-                if (response is null)
-                {
-                    _rentalDal.Add(rental);
-                    return new SuccessResult(Message.RentalAdded);
-                }
-
-                return new ErrorResult(Message.RentalErrorAdded);
-
-
-            }
+            _rentalDal.Add(rental);
+            return null;
 
         }
 
@@ -72,6 +60,28 @@ namespace Business.Concrete
         {
             _rentalDal.Delete(rental);
             return new SuccessResult();
+        }
+
+        private IResult CheckRentalCarIsReturnDateNull(Rental rental)
+        {
+            var result = _rentalDal.Get(r => r.Id == rental.Id);
+            if (result is not null)
+            {
+                return new ErrorResult(Message.RentalErrorAdded);
+            }
+            else
+            {
+                var response = _rentalDal.Get
+                    (r => r.CarId == rental.CarId && (r.ReturnDate == null
+                    || r.ReturnDate > rental.RentDate));
+
+                if (response is null)
+                {
+                    return new SuccessResult(Message.RentalAdded);
+                }
+                return new ErrorResult(Message.RentalErrorAdded);
+
+            }
         }
     }
 }

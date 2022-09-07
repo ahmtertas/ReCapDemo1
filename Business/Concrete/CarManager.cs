@@ -3,6 +3,7 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -27,6 +28,12 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
+            var result = BusinessRules.Run(CheckCountOfCar());
+            if (result != null)
+            {
+                return new ErrorResult(result.Message);
+            }
+
             _carDal.Add(car);
             return new SuccessResult(Message.CarAdded);
 
@@ -67,5 +74,18 @@ namespace Business.Concrete
             _carDal.Update(car);
             return new SuccessResult(Message.CarUpdated);
         }
+
+        //Business Rules
+        private IResult CheckCountOfCar()
+        {
+            var result = _carDal.GetAll().Count;
+            if (result>=11)
+            {
+                return new ErrorResult(Message.OverCountOfCar);
+            }
+            return new SuccessResult();
+        }
+        
+
     }
 }
