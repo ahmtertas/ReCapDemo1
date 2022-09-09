@@ -11,6 +11,8 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Core.Utilities.IoC;
+using Core.Extensions;
+using Core.DependencyResolvers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,8 +46,12 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddSingleton<ICarService, CarManager>();
 //builder.Services.AddSingleton<ICarDal, EfCarDal>();
 
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-ServiceTool.Create(builder.Services);
+
+//coremodule gibi farklý modullerde oluþturursak buraya ekleyebiliriz
+builder.Services.AddDependencyResolvers(new ICoreModule[] 
+{
+    new CoreModule()
+});
 
 //Autofac'i ayaða kaldýrdýk.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())

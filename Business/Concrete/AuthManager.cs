@@ -62,8 +62,9 @@ namespace Business.Concrete
             if (_userService.GetByMail(email) != null)
             {
                 return new ErrorResult(Message.UserAlreadyExists);
-            }
+            }                       
             return new SuccessResult();
+
         }
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
