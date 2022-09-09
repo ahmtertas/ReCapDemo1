@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,14 @@ namespace Business.Constants
         public static string OverBrandCount = "En fazla 14 marka ekleyebilirsiniz";
         public static string OverCountOfCar = "Şirketimize 10 adet araçtan fazlası eklenememektedir.";
         public static string RentalNotAddedForReturnDate = "Aracımız şu an kirada";
+        public static string AuthorizationDenied = "Yetkin yok";
+        public static string UserAlreadyExists = "Kullanıcı zaten var ";
+        public static string AccessTokenCreated = "Token oluşturuldu";
+        public static string PasswordError = "Şifre hatalı";
+        public static string SuccessfulLogin = "Giriş başarılı";
+        public static string UserNotFound = "Kullanıcı bulunamadı.";
+
+
+
     }
 }

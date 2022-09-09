@@ -30,7 +30,7 @@ namespace Business.Concrete
             {
                 return result;
             }
-            carImage.ImagePath = _fileHelper.Upload(file,PathConstants.ImagesPath);
+            carImage.ImagePath = PathConstants.ImagesPath + _fileHelper.Upload(file,PathConstants.ImagesPath);
             carImage.Date = DateTime.Now;
             _carImageDal.Add(carImage);
             return new SuccessResult("Resim başarıyla yüklendi");

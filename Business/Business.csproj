@@ -11,6 +11,7 @@
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.1" />
     <PackageReference Include="Castle.Core" Version="5.1.0" />
     <PackageReference Include="FluentValidation" Version="11.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
