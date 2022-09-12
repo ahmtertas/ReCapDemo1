@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CrossCuttingConcerns\Caching\Redis\" />
+  </ItemGroup>
+
 </Project>

@@ -2,6 +2,9 @@
 using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
 using Core.Utilities.Business;
@@ -25,8 +28,10 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
+
         [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Car car)
         {
             var result = BusinessRules.Run(CheckCountOfCar());
@@ -46,6 +51,9 @@ namespace Business.Concrete
             return new SuccessResult(Message.CarDelete);
         }
 
+
+        [CacheAspect]
+        [PerformanceAspect(3)]
         public IDataResult<List<Car>> GetAll()
         {
             if (DateTime.Now.Hour == 22)
@@ -60,6 +68,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p=>p.ColorId == id));
         }
 
+
+        [CacheAspect]
         public IDataResult<Car> GetById(int id)
         {
             return new SuccessDataResult<Car>(_carDal.Get(p => p.Id == id));
@@ -70,9 +80,19 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
 
+        //özellikle Iproductserviceteki get metoduna ait olan ne kadar cachleme varsa hepsini siler.
+        [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Car car)
         {          
             _carDal.Update(car);
+            return new SuccessResult(Message.CarUpdated);
+        }
+
+        [TransactionScopeAspect]
+        public IResult TransactionalOperation(Car car)
+        {
+            _carDal.Update(car);
+            _carDal.Add(car);
             return new SuccessResult(Message.CarUpdated);
         }
 

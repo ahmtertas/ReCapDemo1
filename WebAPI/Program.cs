@@ -41,17 +41,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Bu kodlar yerine Autofac kullandýk.
-
-//builder.Services.AddSingleton<ICarService, CarManager>();
-//builder.Services.AddSingleton<ICarDal, EfCarDal>();
-
 
 //coremodule gibi farklý modullerde oluþturursak buraya ekleyebiliriz
-builder.Services.AddDependencyResolvers(new ICoreModule[] 
+builder.Services.AddDependencyResolvers(new ICoreModule[]
 {
     new CoreModule()
 });
+
 
 //Autofac'i ayaða kaldýrdýk.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
