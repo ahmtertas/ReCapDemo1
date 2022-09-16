@@ -49,6 +49,8 @@ namespace WebAPI.Controllers
         [HttpGet("getdetailsdto")]
         public IActionResult GetDetailsDto()
         {
+            Thread.Sleep(5000);
+
             var result = _carServices.GetCarDetails();
             if (result.Success)
             {
